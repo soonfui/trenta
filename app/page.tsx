@@ -135,7 +135,7 @@ export default function Home() {
         >
           <div
             className={clsx(
-              "absolute left-6 md:left-12 top-6 font-bold tracking-tight transition-all duration-500 leading-none",
+              "absolute left-6 md:left-12 top-6 font-bold tracking-tight transition-all duration-500 leading-none pointer-events-none z-0",
               scrollY < 50
                 ? "text-[64px] sm:text-[80px] md:text-[120px]"
                 : scrollY < 150
@@ -167,6 +167,23 @@ export default function Home() {
           </button>
         </div>
       </header>
+      {menuOpen && (
+        <div className="fixed inset-0 bg-black z-[55] flex flex-col items-center justify-center gap-8 text-xl">
+          
+          <a onClick={() => setMenuOpen(false)}>About</a>
+          <a onClick={() => setMenuOpen(false)}>Advertising</a>
+          <a onClick={() => setMenuOpen(false)}>Event</a>
+
+          <a
+            href="https://wa.me/601123280082"
+            target="_blank"
+            className="border px-6 py-3 rounded-full"
+          >
+            Contact
+          </a>
+
+        </div>
+      )}
 
       {/* HERO */}
       <section className="pt-40 md:pt-60 px-6 md:px-12 max-w-7xl mx-auto">
