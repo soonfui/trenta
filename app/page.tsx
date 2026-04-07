@@ -137,9 +137,9 @@ export default function Home() {
             className={clsx(
               "absolute left-6 md:left-12 top-6 font-bold tracking-tight transition-all duration-500 leading-none",
               scrollY < 50
-                ? "text-[120px]"
+                ? "text-[64px] sm:text-[80px] md:text-[120px]"
                 : scrollY < 150
-                ? "text-[60px]"
+                ? "text-[40px] sm:text-[50px] md:text-[60px]"
                 : "text-[0px]"
             )}
           >
@@ -159,7 +159,7 @@ export default function Home() {
             </a>
           </nav>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden relative z-50">
             <div className="space-y-1">
               <div className="w-6 h-[2px] bg-white" />
               <div className="w-6 h-[2px] bg-white" />
