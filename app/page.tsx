@@ -7,6 +7,21 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [active, setActive] = useState("Events");
   const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const logoSize = isMobile
+  ? scrollY < 20
+    ? "text-[64px]"
+    : scrollY < 60
+    ? "text-[40px]"
+    : "text-[0px]"
+  : scrollY < 50
+  ? "text-[120px]"
+  : scrollY < 150
+  ? "text-[60px]"
+  : "text-[0px]";
+
+  const hideNav = isMobile ? scrollY > 60 : scrollY > 150;
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -140,7 +155,8 @@ export default function Home() {
                 ? "text-[64px] sm:text-[80px] md:text-[120px]"
                 : scrollY < 150
                 ? "text-[40px] sm:text-[50px] md:text-[60px]"
-                : "text-[0px]"
+                : "text-[0px]",
+                hideNav ? "opacity-0 pointer-events-none" : "opacity-100"
             )}
           >
             trenta.
