@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import Image from "next/image";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -58,10 +59,12 @@ export default function Home() {
       >
         {/* 🖼️ 背景圖片 */}
         {image && (
-          <div
-            className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105"
-            style={{ backgroundImage: `url(${image})` }}
-          />
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              src={image}
+              className="w-full h-full object-cover md:group-hover:scale-105 transition duration-500 will-change-transform"
+            />
+          </div>
         )}
 
         {/* 🌑 overlay（讓字清楚） */}
