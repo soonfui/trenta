@@ -6,6 +6,7 @@ import clsx from "clsx";
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [active, setActive] = useState("Events");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -14,13 +15,18 @@ export default function Home() {
   }, []);
 
   const filters = ["Events", "Advertising", "PA System"];
-
+  type Variant = "dark" | "light" | "highlight";
   const BaseCard = ({
     children,
     variant = "dark",
     image,
     className = "",
-  }: any) => {
+  }: {
+      children: React.ReactNode;
+      variant?: Variant;
+      image?: string;
+      className?: string;
+    }) => {
     const styles = {
       dark: "bg-zinc-900 text-white",
       light: "bg-white text-black",
