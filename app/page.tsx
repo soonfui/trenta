@@ -21,6 +21,7 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [active, setActive] = useState("Events");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const logoSize = isMobile
@@ -43,6 +44,15 @@ export default function Home() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!videoOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [videoOpen]);
 
   const whoMeasureRef = useRef<HTMLParagraphElement | null>(null);
   const whoObserverRef = useRef<HTMLParagraphElement | null>(null);
@@ -457,7 +467,7 @@ export default function Home() {
           {/* hidden measurer (must share same width constraints) */}
           <p
             ref={whoMeasureRef}
-            className={`${titillium.className} who-text who-measure text-[clamp(32px,5vw,84px)] leading-[1.02] font-[600] tracking-[-0.03em]`}
+            className={`${titillium.className} who-text who-measure text-[clamp(32px,5vw,84px)] leading-[1.02] font-[400] tracking-[-0.03em]`}
             aria-hidden="true"
           >
             {whoTokens.map((t, i) => {
@@ -483,7 +493,7 @@ export default function Home() {
           {/* actual reveal text */}
           <p
             ref={whoObserverRef}
-            className={`${titillium.className} who-text who-reveal text-[clamp(32px,5vw,84px)] leading-[1.02] font-[600] tracking-[-0.03em]`}
+            className={`${titillium.className} who-text who-reveal text-[clamp(32px,5vw,84px)] leading-[1.02] font-[400] tracking-[-0.03em]`}
           >
             {whoLines
               ? whoLines.map((line, li) => (
@@ -515,7 +525,7 @@ export default function Home() {
                 )}
           </p>
         </div>
-        <div className="mt-10 flex justify-end">
+        <div className="mt-10 mb-6 md:mb-8 flex justify-end">
           <a
             href="#"
             className="inline-block border border-white/20 px-6 py-3 rounded-full text-sm hover:bg-white hover:text-black transition"
@@ -526,7 +536,142 @@ export default function Home() {
 
       </section>
 
-      <div className="h-[200vh]" />
+      {/* CONTACT */}
+      <section className="bg-white text-black px-6 md:px-12 py-24 md:py-32 font-apple">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+          {/* LEFT */}
+          <div>
+            <h2 className="text-4xl md:text-6xl font-semibold tracking-[-0.02em] mb-12">
+              Let’s Get in Touch
+            </h2>
+
+            {/* PHONE */}
+            <div className="mb-8">
+              <p className="text-3xl font-semibold mb-2">Phone</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium">+6011 2328 0082</p>
+            </div>
+
+            {/* EMAIL */}
+            <div className="mb-8">
+              <p className="text-3xl font-semibold mb-2">Email</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium">tommytong@gmail.com</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium">trenta@gmail.com</p>
+            </div>
+
+            {/* ADDRESS */}
+            <div>
+              <p className="text-3xl font-semibold mb-2">Address</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium leading-relaxed">
+                26, Jln Selayang Segar 1,
+                <br />
+                Taman Selayang Segar,
+                <br />
+                68100 Batu Caves, Selangor
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT MAP */}
+          <div className="w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden border border-black/10">
+            <iframe
+              src="https://maps.google.com/maps?q=26%20Jln%20Selayang%20Segar%201%20Batu%20Caves&z=15&output=embed"
+              className="w-full h-full border-0"
+              loading="lazy"
+              title="Map"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* HOW WE WORK */}
+      <section className="bg-black text-black px-6 md:px-12 pt-8 md:pt-10 pb-10 md:pb-12">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          {/* LEFT TEXT */}
+          <div className="space-y-12">
+            <div>
+
+              <h2 className="text-4xl md:text-6xl leading-[1.05] font-medium tracking-[-0.02em]">
+                <span className="block text-white">Clients come to us for what we do,</span>
+                <span className="block text-white/50">but they stick with us for how we do it.</span>
+              </h2>
+            </div>
+
+          </div>
+
+          {/* RIGHT VIDEO */}
+          <div className="relative">
+            <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
+              <video
+                src="/video/tommy.mp4"
+                className="w-full h-full object-cover opacity-80"
+                muted
+                loop
+                autoPlay
+                playsInline
+              />
+
+              {/* PLAY BUTTON */}
+              <button
+                onClick={() => setVideoOpen(true)}
+                className="absolute bottom-6 left-6 bg-lime-400 text-black px-5 py-3 rounded-full text-sm font-medium hover:scale-105 transition"
+              >
+                ▶ Play Agency Reel
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {videoOpen && (
+        <div className="fixed inset-0 bg-black z-[100]">
+          <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-10">
+            <div className="relative w-full max-w-5xl">
+              {/* CLOSE BUTTON */}
+              <button
+                onClick={() => setVideoOpen(false)}
+                className="absolute -top-10 right-0 text-white text-2xl md:text-3xl"
+                aria-label="Close video"
+              >
+                ✕
+              </button>
+
+              {/* VIDEO */}
+              <video
+                src="/video/tommy.mp4"
+                controls
+                autoPlay
+                playsInline
+                className="w-full max-h-[80vh] md:max-h-[85vh] rounded-lg bg-black"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <footer className="bg-black text-white px-6 md:px-12 pt-4 pb-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-white/60">
+            © 2026 Trenta. Creating events, content & experiences.
+          </p>
+
+          <div className="flex gap-6 text-sm text-white/60">
+            <a
+              href="https://www.instagram.com/tommytongmy?igsh=d3l0eGVzNWN1MXJi"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition"
+            >
+              Instagram
+            </a>
+            <a href="#" className="hover:text-white transition">
+              TikTok
+            </a>
+            <a href="#" className="hover:text-white transition">
+              XHS
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -10,6 +10,12 @@ body {
   color: #fff;
 }
 
+/* Apple-like system font stack (SF Pro on mac, sensible fallbacks elsewhere) */
+.font-apple {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+}
+
 /* 🔥 WHO TEXT 基礎顏色 */
 .who-text {
   color: rgba(255,255,255,0.12);
