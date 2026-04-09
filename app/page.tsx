@@ -1,8 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
+import {Inter} from 'next/font/google'
+import { Titillium_Web } from "next/font/google";
+
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const titillium = Titillium_Web({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"],
+});
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -26,9 +39,158 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const whoMeasureRef = useRef<HTMLParagraphElement | null>(null);
+  const whoObserverRef = useRef<HTMLParagraphElement | null>(null);
+  const whoWrapRef = useRef<HTMLDivElement | null>(null);
+  const [whoLines, setWhoLines] = useState<number[][] | null>(null);
+
+  const whoTokens = useMemo(() => {
+    const parts: Array<
+      | { type: "text"; value: string }
+      | { type: "icon"; src: string; alt?: string }
+    > = [
+      { type: "text", value: "Your brand isn’t just seen, it’s experienced." },
+      { type: "icon", src: "/images/ads3.png" },
+      { type: "text", value: "We create events that attract, produce content that connects," },
+      { type: "icon", src: "/images/ads4.png" },
+      { type: "text", value: "and deliver sound that elevates every moment." },
+      { type: "icon", src: "/images/pa.png" },
+      { type: "text", value: "From mall activations to digital campaigns," },
+      { type: "icon", src: "/images/pa1.png" },
+      { type: "text", value: "we help brands grow, engage, and stand out." },
+      { type: "icon", src: "/images/event1.png" },
+    ];
+
+    const tokens: Array<
+      | { kind: "word"; text: string }
+      | { kind: "space"; text: string }
+      | { kind: "icon"; src: string; alt?: string }
+    > = [];
+
+    const pushText = (t: string) => {
+      const words = t.trim().split(/\s+/).filter(Boolean);
+      for (let i = 0; i < words.length; i++) {
+        tokens.push({ kind: "word", text: words[i] });
+        if (i !== words.length - 1) tokens.push({ kind: "space", text: " " });
+      }
+      tokens.push({ kind: "space", text: " " });
+    };
+
+    for (const p of parts) {
+      if (p.type === "text") pushText(p.value);
+      else tokens.push({ kind: "icon", src: p.src, alt: p.alt });
+      tokens.push({ kind: "space", text: " " });
+    }
+
+    // trim trailing spaces
+    while (tokens.length && tokens[tokens.length - 1].kind === "space") tokens.pop();
+    return tokens;
+  }, []);
+
+  useEffect(() => {
+    const wrap = whoWrapRef.current;
+    if (!wrap) return;
+
+    let raf = 0;
+    const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
+
+    const update = () => {
+      raf = 0;
+      const rect = wrap.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+
+      // Progress from when top hits 80% viewport to when bottom hits 30% viewport
+      const start = vh * 0.8;
+      const end = vh * 0.3;
+      const t = (start - rect.top) / (start - end);
+      const p = clamp01(t);
+      wrap.style.setProperty("--who-p", String(p));
+    };
+
+    const onScrollOrResize = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    const el = whoMeasureRef.current;
+    if (!el) return;
+
+    let raf = 0;
+    let ro: ResizeObserver | null = null;
+
+    const compute = () => {
+      raf = 0;
+      const nodes = Array.from(el.querySelectorAll<HTMLElement>("[data-who-token]"));
+      if (!nodes.length) return;
+
+      const styles = window.getComputedStyle(el);
+      const lineHeight = Number.parseFloat(styles.lineHeight) || 1;
+      const baseTop = el.getBoundingClientRect().top;
+
+      const lines: number[][] = [];
+      let currentKey: number | null = null;
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        // Use first line box for inline content (more stable across icons/baseline).
+        const rects = n.getClientRects();
+        const top = (rects[0]?.top ?? n.getBoundingClientRect().top) - baseTop;
+        const key = Math.round(top / lineHeight);
+
+        if (currentKey === null || key !== currentKey) {
+          lines.push([]);
+          currentKey = key;
+        }
+        lines[lines.length - 1].push(i);
+      }
+
+      setWhoLines(lines);
+    };
+
+    const schedule = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(compute);
+    };
+
+    schedule();
+
+    // Recompute on any layout width change (breakpoints, container resizing).
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => schedule());
+      if (whoWrapRef.current) ro.observe(whoWrapRef.current);
+      else ro.observe(el);
+    } else {
+      window.addEventListener("resize", schedule);
+    }
+
+    // Fonts loading can change wrapping; schedule after fonts are ready.
+    const fontsAny = document as any;
+    if (fontsAny.fonts?.ready?.then) {
+      fontsAny.fonts.ready.then(() => schedule()).catch(() => {});
+    }
+
+    return () => {
+      if (ro) ro.disconnect();
+      else window.removeEventListener("resize", schedule);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, [whoTokens]);
 
   const filters = ["Events", "Advertising", "PA System"];
   type Variant = "dark" | "light" | "highlight";
@@ -148,24 +310,19 @@ export default function Home() {
         <div
           className={clsx(
             "max-w-7xl mx-auto relative flex items-start justify-end px-6 md:px-12 py-6 transition-all duration-500",
-            scrollY > 150 ? "opacity-0 pointer-events-none" : "opacity-100"
+            hideNav ? "opacity-0 pointer-events-none" : "opacity-100"
           )}
         >
           <div
             className={clsx(
               "absolute left-6 md:left-12 top-6 font-bold tracking-tight transition-all duration-500 leading-none pointer-events-none z-0",
-              scrollY < 50
-                ? "text-[64px] sm:text-[80px] md:text-[120px]"
-                : scrollY < 150
-                ? "text-[40px] sm:text-[50px] md:text-[60px]"
-                : "text-[0px]",
-                hideNav ? "opacity-0 pointer-events-none" : "opacity-100"
+              logoSize
             )}
           >
             trenta.
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-[14px]">
+          <nav className="hidden md:flex items-center gap-8 text-[14px] relative z-10">
             <a href="#">About</a>
             <a href="#">Advertising</a>
             <a href="#">Event</a>
@@ -283,7 +440,91 @@ export default function Home() {
   </div>
 )}
 
-</section>
+      </section>
+
+      {/* WHO WE ARE */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto mt-32 md:mt-48">
+
+        <p className="text-[18px] md:text-[26px] text-white mb-8 tracking-[0.08em]">
+          ▪ Who We Are
+        </p>
+
+        <div
+          ref={whoWrapRef}
+          className="who-wrap relative"
+          style={{ ["--who-lines" as any]: whoLines?.length ?? 1 }}
+        >
+          {/* hidden measurer (must share same width constraints) */}
+          <p
+            ref={whoMeasureRef}
+            className={`${titillium.className} who-text who-measure text-[clamp(32px,5vw,84px)] leading-[1.02] font-[600] tracking-[-0.03em]`}
+            aria-hidden="true"
+          >
+            {whoTokens.map((t, i) => {
+              if (t.kind === "icon") {
+                return (
+                  <img
+                    key={i}
+                    data-who-token
+                    src={t.src}
+                    alt={t.alt ?? ""}
+                    className="inline-icon"
+                  />
+                );
+              }
+              return (
+                <span key={i} data-who-token>
+                  {t.text}
+                </span>
+              );
+            })}
+          </p>
+
+          {/* actual reveal text */}
+          <p
+            ref={whoObserverRef}
+            className={`${titillium.className} who-text who-reveal text-[clamp(32px,5vw,84px)] leading-[1.02] font-[600] tracking-[-0.03em]`}
+          >
+            {whoLines
+              ? whoLines.map((line, li) => (
+                  <span key={li} className="who-line" style={{ ["--i" as any]: li }}>
+                    {line.map((tokenIndex) => {
+                      const t = whoTokens[tokenIndex];
+                      if (!t) return null;
+                      if (t.kind === "icon") {
+                        return (
+                          <img
+                            key={tokenIndex}
+                            src={t.src}
+                            alt={t.alt ?? ""}
+                            className="inline-icon"
+                          />
+                        );
+                      }
+                      return <span key={tokenIndex}>{t.text}</span>;
+                    })}
+                  </span>
+                ))
+              : // fallback: no animation until measured
+                whoTokens.map((t, i) =>
+                  t.kind === "icon" ? (
+                    <img key={i} src={t.src} alt={t.alt ?? ""} className="inline-icon" />
+                  ) : (
+                    <span key={i}>{t.text}</span>
+                  )
+                )}
+          </p>
+        </div>
+        <div className="mt-10 flex justify-end">
+          <a
+            href="#"
+            className="inline-block border border-white/20 px-6 py-3 rounded-full text-sm hover:bg-white hover:text-black transition"
+          >
+            Read the long version
+          </a>
+        </div>
+
+      </section>
 
       <div className="h-[200vh]" />
     </div>
