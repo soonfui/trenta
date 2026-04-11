@@ -2,7 +2,8 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import Image from "next/image";
+import Link from "next/link";
+import { SiteNav } from "@/app/components/SiteNav";
 import {Inter} from 'next/font/google'
 import { Titillium_Web } from "next/font/google";
 
@@ -18,32 +19,8 @@ const titillium = Titillium_Web({
 });
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
   const [active, setActive] = useState("Events");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-  const logoSize = isMobile
-  ? scrollY < 20
-    ? "text-[64px]"
-    : scrollY < 60
-    ? "text-[40px]"
-    : "text-[0px]"
-  : scrollY < 50
-  ? "text-[120px]"
-  : scrollY < 150
-  ? "text-[60px]"
-  : "text-[0px]";
-
-  const hideNav = isMobile ? scrollY > 60 : scrollY > 150;
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (!videoOpen) return;
@@ -315,61 +292,7 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white min-h-screen font-sans">
-      {/* NAV */}
-      <header className="fixed top-0 left-0 w-full z-50">
-        <div
-          className={clsx(
-            "max-w-7xl mx-auto relative flex items-start justify-end px-6 md:px-12 py-6 transition-all duration-500",
-            hideNav ? "opacity-0 pointer-events-none" : "opacity-100"
-          )}
-        >
-          <div
-            className={clsx(
-              "absolute left-6 md:left-12 top-6 font-bold tracking-tight transition-all duration-500 leading-none pointer-events-none z-0",
-              logoSize
-            )}
-          >
-            trenta.
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8 text-[14px] relative z-10">
-            <a href="#">About</a>
-            <a href="#">Advertising</a>
-            <a href="#">Event</a>
-            <a
-              href="https://wa.me/601123280082"
-              target="_blank"
-              className="bg-white text-black px-5 py-2 rounded-full"
-            >
-              Contact
-            </a>
-          </nav>
-
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden relative z-50">
-            <div className="space-y-1">
-              <div className="w-6 h-[2px] bg-white" />
-              <div className="w-6 h-[2px] bg-white" />
-            </div>
-          </button>
-        </div>
-      </header>
-      {menuOpen && (
-        <div className="fixed inset-0 bg-black z-[55] flex flex-col items-center justify-center gap-8 text-xl">
-          
-          <a onClick={() => setMenuOpen(false)}>About</a>
-          <a onClick={() => setMenuOpen(false)}>Advertising</a>
-          <a onClick={() => setMenuOpen(false)}>Event</a>
-
-          <a
-            href="https://wa.me/601123280082"
-            target="_blank"
-            className="border px-6 py-3 rounded-full"
-          >
-            Contact
-          </a>
-
-        </div>
-      )}
+      <SiteNav />
 
       {/* HERO */}
       <section className="pt-40 md:pt-60 px-6 md:px-12 max-w-7xl mx-auto">
@@ -388,7 +311,7 @@ export default function Home() {
               From mall activations to social campaigns and sound systems — we help brands show up and stand out.
             </p>
             <a
-              href="https://wa.me/601123280082"
+              href="https://wa.me/6011 1153 7996"
               className="inline-block mt-6 border-b border-white pb-1 text-white"
             >
               Start Your Project
@@ -526,12 +449,12 @@ export default function Home() {
           </p>
         </div>
         <div className="mt-10 mb-6 md:mb-8 flex justify-end">
-          <a
-            href="#"
+          <Link
+            href="/about"
             className="inline-block border border-white/20 px-6 py-3 rounded-full text-sm hover:bg-white hover:text-black transition"
           >
             Read the long version
-          </a>
+          </Link>
         </div>
 
       </section>
@@ -548,21 +471,20 @@ export default function Home() {
             {/* PHONE */}
             <div className="mb-8">
               <p className="text-3xl font-semibold mb-2">Phone</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium">+6011 2328 0082</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium">+6011 1153 7996</p>
             </div>
 
             {/* EMAIL */}
             <div className="mb-8">
               <p className="text-3xl font-semibold mb-2">Email</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium">tommytong@gmail.com</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium">trenta@gmail.com</p>
+              <p className="text-lg md:text-xl text-black/70 font-medium">trentainformation@gmail.com</p>
             </div>
 
             {/* ADDRESS */}
             <div>
               <p className="text-3xl font-semibold mb-2">Address</p>
               <p className="text-lg md:text-xl text-black/70 font-medium leading-relaxed">
-                26, Jln Selayang Segar 1,
+                26 A, Jln Selayang Segar 1,
                 <br />
                 Taman Selayang Segar,
                 <br />
@@ -648,12 +570,24 @@ export default function Home() {
         </div>
       )}
 
-      <footer className="bg-black text-white px-6 md:px-12 pt-4 pb-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-white/60">
-            © 2026 Trenta. Creating events, content & experiences.
-          </p>
+      <footer className="bg-black text-white px-6 md:px-12 pt-6 pb-10">
 
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+
+          {/* LEFT */}
+          <div className="space-y-2">
+            <p className="text-sm text-white/60">
+              © 2026 Trenta. Creating events, content & experiences.
+            </p>
+
+            {/* COMPANY INFO */}
+            <div className="text-xs text-white/40 leading-relaxed">
+              <p>TRENTA ENTERPRISE · Since 2015</p>
+              <p>201503347216 (002496057-M)</p>
+            </div>
+          </div>
+
+          {/* RIGHT */}
           <div className="flex gap-6 text-sm text-white/60">
             <a
               href="https://www.instagram.com/tommytongmy?igsh=d3l0eGVzNWN1MXJi"
@@ -663,14 +597,26 @@ export default function Home() {
             >
               Instagram
             </a>
-            <a href="#" className="hover:text-white transition">
-              TikTok
+
+            <a
+              href="https://www.youtube.com/@trentainformation"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition"
+            >
+              YouTube
             </a>
-            <a href="#" className="hover:text-white transition">
+
+            <a
+              href="#"
+              className="hover:text-white transition"
+            >
               XHS
             </a>
           </div>
+
         </div>
+
       </footer>
     </div>
   );
