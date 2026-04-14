@@ -48,7 +48,7 @@ export default function Home() {
       { type: "text", value: "and deliver sound that elevates every moment." },
       { type: "icon", src: "/images/project/pa/6.jpeg" },
       { type: "text", value: "From mall activations to digital campaigns," },
-      { type: "icon", src: "/images/project/ads/vivo.jpg" },
+      { type: "icon", src: "/images/project/ads/vivo.JPG" },
       { type: "text", value: "we help brands grow, engage, and stand out." },
       { type: "icon", src: "/images/project/ads/maybank.jpg" },
     ];
@@ -231,11 +231,11 @@ export default function Home() {
 
   const data = {
       Events: [
-        { title: "TOYOTA", desc: "Mall Activation", image: "/images/project/toyota/2.jpeg" },
+        { title: "TOYOTA", desc: "Mall Activation", image: "/images/project/toyota/2.jpg" },
         { quote: "Massive engagement within hours.", author: "Retail Brand" },
         { title: "All Services", desc: "See how we support your brand ↗" },
-        { title: "Let’s build your next campaign ↗", image: "/images/project/chevrolet/1.jpeg" },
-        { title: "Chevrolet" ,image: "/images/project/chevrolet/2.jpeg"},
+        { title: "Let’s build your next campaign ↗", image: "/images/project/Chevrolet/1.jpeg" },
+        { title: "Chevrolet" ,image: "/images/project/Chevrolet/2.jpeg"},
       ],
 
       Advertising: [
