@@ -42,15 +42,15 @@ export default function Home() {
       | { type: "icon"; src: string; alt?: string }
     > = [
       { type: "text", value: "Your brand isn’t just seen, it’s experienced." },
-      { type: "icon", src: "/images/ads3.png" },
+      { type: "icon", src: "/images/project/Malaysia Airports Holdings Berhad (MAHB)/2.jpeg" },
       { type: "text", value: "We create events that attract, produce content that connects," },
-      { type: "icon", src: "/images/ads4.png" },
+      { type: "icon", src: "/images/project/ads/proxes.jpg" },
       { type: "text", value: "and deliver sound that elevates every moment." },
-      { type: "icon", src: "/images/pa.png" },
+      { type: "icon", src: "/images/project/pa/6.jpeg" },
       { type: "text", value: "From mall activations to digital campaigns," },
-      { type: "icon", src: "/images/pa1.png" },
+      { type: "icon", src: "/images/project/ads/vivo.jpg" },
       { type: "text", value: "we help brands grow, engage, and stand out." },
-      { type: "icon", src: "/images/event1.png" },
+      { type: "icon", src: "/images/project/ads/maybank.jpg" },
     ];
 
     const tokens: Array<
@@ -179,7 +179,7 @@ export default function Home() {
     };
   }, [whoTokens]);
 
-  const filters = ["Events", "Advertising", "PA System"];
+  const filters = ["Events", "Advertising", "Sound & Light"];
   type Variant = "dark" | "light" | "highlight";
   const BaseCard = ({
     children,
@@ -231,31 +231,84 @@ export default function Home() {
 
   const data = {
       Events: [
-        { title: "TOYOTA", desc: "Mall Activation", image: "/images/toyota.png" },
+        { title: "TOYOTA", desc: "Mall Activation", image: "/images/project/toyota/2.jpeg" },
         { quote: "Massive engagement within hours.", author: "Retail Brand" },
-        { title: "All Services", desc: "See how we support your brand →" },
-        { title: "Let’s build your next campaign →", image: "/images/event.png" },
-        { title: "EXTRA 1" ,image: "/images/event1.png"},
+        { title: "All Services", desc: "See how we support your brand ↗" },
+        { title: "Let’s build your next campaign ↗", image: "/images/project/chevrolet/1.jpeg" },
+        { title: "Chevrolet" ,image: "/images/project/chevrolet/2.jpeg"},
       ],
 
       Advertising: [
-        { title: "FOOD & LIFESTYLE", desc: "Content Campaigns",image: "/images/ads2.png" },
-        { title: "SOCIAL VIDEO", desc: "TikTok · IG · 小紅書" },
+        { title: "FOOD & LIFESTYLE", desc: "Chun-Ciou Hot Pot Malaysia",image: "/images/project/ads/1.jpg" },
+        { title: "SOCIAL VIDEO", desc: "TikTok · Instargram" },
         { quote: "Boosted reach across platforms.", author: "F&B Brand" },
-        { title: "All Services", desc: "See how we support your brand →",image: "/images/ads3.png" },
-        { title: "Let’s build your next campaign →",image: "/images/ads4.png" },
+        { title: "All Services", desc: "See how we support your brand ↗",image: "/images/project/ads/segi2.jpg" },
+        { title: "Alliance Bank ↗",image: "/images/project/Alliance Bank/3.jpeg" },
       ],
 
-      "PA System": [
-        { title: "LIVE SOUND", desc: "Event Audio System" ,image: "/images/paevent.png" },
+      "Sound & Light": [
+        { title: "LIVE SOUND", desc: "Event Audio System" ,image: "/images/project/pa/1.jpeg" },
         { title: "STAGE SETUP", desc: "Full Technical Support" },
         { quote: "Crystal clear sound.", author: "Organizer"},
-        { title: "All Services", desc: "See how we support your brand →",image: "/images/pa.png" },
-        { title: "Let’s build your next campaign →",image: "/images/pa1.png" },
+        { title: "All Services", desc: "See how we support your brand ↗",image: "/images/project/pa/8.jpeg" },
+        { title: "Let’s build your next campaign ↗",image: "/images/project/pa/9.jpeg" },
       ],
     };
 
   const current = data[active as keyof typeof data];
+
+  const trustedLogos = [
+    "/images/client/1.png",
+    "/images/client/2.png",
+    "/images/client/3.png",
+    "/images/client/4.png",
+    "/images/client/5.png",
+    "/images/client/6.png",
+    "/images/client/7.png",
+    "/images/client/8.png",
+    "/images/client/9.png",
+    "/images/client/10.png",
+    "/images/client/11.png",
+    "/images/client/12.png",
+    "/images/client/13.jpg",
+    "/images/client/14.jpg",
+    "/images/client/15.jpg",
+    "/images/client/16.jpg",
+    "/images/client/17.jpg",
+    "/images/client/9.png",
+  ];
+  const trustedChunkSize = 6;
+  const trustedChunks = useMemo(
+    () =>
+      Array.from(
+        { length: Math.ceil(trustedLogos.length / trustedChunkSize) },
+        (_, i) => trustedLogos.slice(i * trustedChunkSize, i * trustedChunkSize + trustedChunkSize)
+      ),
+    []
+  );
+  const [trustedBatchIndex, setTrustedBatchIndex] = useState(0);
+  const [trustedVisible, setTrustedVisible] = useState(true);
+
+  useEffect(() => {
+    if (!trustedChunks.length) return;
+
+    const showMs = 3200;
+    const fadeMs = 500;
+    let fadeTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    const interval = setInterval(() => {
+      setTrustedVisible(false);
+      fadeTimeout = setTimeout(() => {
+        setTrustedBatchIndex((prev) => (prev + 1) % trustedChunks.length);
+        setTrustedVisible(true);
+      }, fadeMs);
+    }, showMs + fadeMs);
+
+    return () => {
+      clearInterval(interval);
+      if (fadeTimeout) clearTimeout(fadeTimeout);
+    };
+  }, [trustedChunks.length]);
 
     // 👉 保證至少 6 個位置（不足補 null）
   // const slots = [...current];
@@ -373,6 +426,34 @@ export default function Home() {
   </div>
 )}
 
+      </section>
+
+      {/* TRUSTED BY */}
+      <section className="px-6 md:px-16 lg:px-24 max-w-[1400px] mx-auto mt-24 md:mt-32 text-center">
+        <p className="text-sm md:text-base tracking-[0.25em] text-white/60 mb-10 md:mb-14">
+          TRUSTED BY
+        </p>
+
+        <div
+          className={clsx(
+            "grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 lg:gap-10 transition-opacity duration-500",
+            trustedVisible ? "opacity-100" : "opacity-0"
+          )}
+        >
+          {trustedChunks[trustedBatchIndex]?.map((logo, i) => (
+            <div
+              key={`${trustedBatchIndex}-${logo}-${i}`}
+              className="flex h-16 w-full items-center justify-center md:h-20 lg:h-24"
+            >
+              <img
+                src={logo}
+                alt="Client logo"
+                className="trusted-logo-item h-full w-auto object-contain"
+                style={{ animationDelay: `${i * 0.14}s` }}
+              />
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* WHO WE ARE */}
@@ -524,7 +605,7 @@ export default function Home() {
           <div className="relative">
             <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
               <video
-                src="/video/tommy.mp4"
+                src="/video/Alliance Bank.mp4"
                 className="w-full h-full object-cover opacity-80"
                 muted
                 loop
@@ -559,7 +640,7 @@ export default function Home() {
 
               {/* VIDEO */}
               <video
-                src="/video/tommy.mp4"
+                src="/video/Alliance Bank.mp4"
                 controls
                 autoPlay
                 playsInline
@@ -618,6 +699,24 @@ export default function Home() {
         </div>
 
       </footer>
+
+      <style jsx global>{`
+        @keyframes trustedFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .trusted-logo-item {
+          opacity: 0;
+          animation: trustedFadeIn 0.45s ease forwards;
+        }
+      `}</style>
     </div>
   );
 }
