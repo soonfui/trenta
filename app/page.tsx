@@ -41,16 +41,16 @@ export default function Home() {
       | { type: "text"; value: string }
       | { type: "icon"; src: string; alt?: string }
     > = [
-      { type: "text", value: "Your brand isn’t just seen, it’s experienced." },
-      { type: "icon", src: "/images/project/Malaysia Airports Holdings Berhad (MAHB)/2.jpeg" },
-      { type: "text", value: "We create events that attract, produce content that connects," },
-      { type: "icon", src: "/images/project/ads/proxes.jpg" },
-      { type: "text", value: "and deliver sound that elevates every moment." },
-      { type: "icon", src: "/images/project/pa/6.jpeg" },
-      { type: "text", value: "From mall activations to digital campaigns," },
-      { type: "icon", src: "/images/project/ads/vivo.JPG" },
-      { type: "text", value: "we help brands grow, engage, and stand out." },
-      { type: "icon", src: "/images/project/ads/maybank.jpg" },
+      { type: "text", value: "Your brand shouldn’t just be seen — it should be experienced. We craft immersive brand journeys that go beyond visuals. From high-impact events that draw crowds, to content that resonates, and sound & lighting that transforms every moment — we design experiences that leave lasting impressions. From mall activations to full-scale digital campaigns, we help brands grow, connect, and stand out where it matters most." },
+      //{ type: "icon", src: "/images/project/Malaysia Airports Holdings Berhad (MAHB)/2.jpeg" },
+      //{ type: "text", value: "We craft immersive brand journeys that go beyond visuals." },
+      //{ type: "icon", src: "/images/project/ads/proxes.jpg" },
+      //{ type: "text", value: "From high-impact events that draw crowds, to content that resonates, and sound & lighting that transforms every moment — we design experiences that leave lasting impressions." },
+      //{ type: "icon", src: "/images/project/pa/6.jpeg" },
+      //{ type: "text", value: "From mall activations to full-scale digital campaigns," },
+      //{ type: "icon", src: "/images/project/ads/vivo.JPG" },
+      //{ type: "text", value: "we help brands grow, connect, and stand out where it matters most." },
+      //{ type: "icon", src: "/images/project/ads/maybank.jpg" },
     ];
 
     const tokens: Array<
@@ -180,7 +180,7 @@ export default function Home() {
   }, [whoTokens]);
 
   const filters = ["Events", "Advertising", "Sound & Light"];
-  type Variant = "dark" | "light" | "highlight";
+  type Variant = "dark" | "light" | "highlight" | "greenlight" | "bluelight" | "pinklight";
   const BaseCard = ({
     children,
     variant = "dark",
@@ -196,6 +196,9 @@ export default function Home() {
       dark: "bg-zinc-900 text-white",
       light: "bg-white text-black",
       highlight: "bg-zinc-800 text-white",
+      greenlight: "bg-lime-400 text-white ",
+      bluelight: "bg-blue-400 text-white",
+      pinklight: "bg-pink-400 text-lime-700",
     };
 
     return (
@@ -231,27 +234,29 @@ export default function Home() {
 
   const data = {
       Events: [
-        { title: "TOYOTA", desc: "Mall Activation", image: "/images/project/toyota/2.jpg" },
-        { quote: "Massive engagement within hours.", author: "Retail Brand" },
-        { title: "All Services", desc: "See how we support your brand ↗" },
-        { title: "Let’s build your next campaign ↗", image: "/images/project/Chevrolet/1.jpeg" },
-        { title: "Chevrolet" ,image: "/images/project/Chevrolet/2.jpeg"},
+        { title: "Mall Activation", desc: "TOYOTA", image: "/images/project/toyota/2.jpg" },
+        //{ quote: "Let’s build your next campaign ↗", author: "Retail Brand",image: "/images/project/Chevrolet/1.jpeg" },
+        { title: "Brand Media Launch", desc: "Chevrolet",image: "/images/project/Chevrolet/1.jpeg" },
+        { quote: "Turn brand activations and media launches into unforgettable experiences. " },
+        { quote: "Event Services" , author: "See how we support your brand ↗"},
+        { title: "More..." ,image: "/images/project/ads/proxes.jpg"},
       ],
 
       Advertising: [
-        { title: "FOOD & LIFESTYLE", desc: "Chun-Ciou Hot Pot Malaysia",image: "/images/project/ads/1.jpg" },
-        { title: "SOCIAL VIDEO", desc: "TikTok · Instargram" },
-        { quote: "Boosted reach across platforms.", author: "F&B Brand" },
-        { title: "All Services", desc: "See how we support your brand ↗",image: "/images/project/ads/segi2.jpg" },
-        { title: "Alliance Bank ↗",image: "/images/project/Alliance Bank/3.jpeg" },
+        { title: "Communication", desc: "Chun-Ciou Hot Pot Malaysia",image: "/images/project/ads/1.jpg" },
+        { title: "Creative Advertising", desc: "Alliance Bank" ,image: "/images/project/Alliance Bank/3.jpeg"},
+        { quote: "Blend strategic communication with bold creative design to turn your brand’s message into high-impact advertising." },
+        // { quote: "Blend strategic communication with bold creative design to turn your brand’s message into an unforgettable experience." },
+        { quote: "Creative Services", author: "See how we support your brand ↗" },
+        { title: "More...",image: "/images/project/ads/segi2.jpg"},
       ],
 
       "Sound & Light": [
-        { title: "LIVE SOUND", desc: "Event Audio System" ,image: "/images/project/pa/1.jpeg" },
-        { title: "STAGE SETUP", desc: "Full Technical Support" },
-        { quote: "Crystal clear sound.", author: "Organizer"},
-        { title: "All Services", desc: "See how we support your brand ↗",image: "/images/project/pa/8.jpeg" },
-        { title: "Let’s build your next campaign ↗",image: "/images/project/pa/9.jpeg" },
+        { title: "LIVE SOUND, LIGHT & SCREEN", desc: "Music Festival" ,image: "/images/project/pa/1.jpeg" },
+        { title: "STAGE SETUP", desc: "Full Technical Support" ,image: "/images/project/pa/10.jpeg"  },
+        { quote: "Blend strategic communication with bold creative design to turn your brand’s message into an unforgettable experience."},
+        { quote: "Audio-Visual Services", author: "See how we support your brand ↗"},
+        { title: "More...",image: "/images/project/pa/9.jpeg" },
       ],
     };
 
@@ -352,16 +357,16 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between gap-12">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-7xl leading-tight font-medium">
-              We create{" "}
-              <span className="text-lime-400">events</span>,{" "}
+              We turn creative vision into{" "}
+              <span className="text-lime-400">experiences</span>,{" "}
               <span className="text-blue-500">content</span>, &{" "}
-              <span className="text-pink-300">experiences</span> that bring your brand to life.
+              <span className="text-pink-300">design </span> that define your brand.
             </h1>
           </div>
 
           <div className="max-w-sm text-gray-400">
             <p>
-              From mall activations to social campaigns and sound systems — we help brands show up and stand out.
+              From space to screen to sound — we design how your brand stands out.
             </p>
             <a
               href="https://wa.me/6011 1153 7996"
@@ -404,7 +409,7 @@ export default function Home() {
     </BaseCard>
 
     {/* 2️⃣ 白（quote） */}
-    <BaseCard variant="light" className="h-[320px] items-start" image={current[1]?.image}>
+    <BaseCard variant="highlight" className="h-[320px] items-start" image={current[1]?.image}>
       {render(current[1])}
     </BaseCard>
 
@@ -414,7 +419,7 @@ export default function Home() {
     </BaseCard>
 
     {/* 4️⃣ 中間（CTA） */}
-    <BaseCard className="h-[200px] items-center" image={current[3]?.image} >
+    <BaseCard variant="bluelight" className="h-[200px] items-center" image={current[3]?.image} >
       {render(current[3])}
     </BaseCard>
 
@@ -534,7 +539,7 @@ export default function Home() {
             href="/about"
             className="inline-block border border-white/20 px-6 py-3 rounded-full text-sm hover:bg-white hover:text-black transition"
           >
-            Read the long version
+            About Us
           </Link>
         </div>
 

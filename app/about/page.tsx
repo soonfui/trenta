@@ -75,7 +75,7 @@ export default function AboutPage() {
 
           {/* Tommy */}
           <div className="mb-16">
-          <div className="bg-lime-400 pt-5 px-5 pb-0 rounded-2xl w-[85%] ml-auto hover:scale-105 transition duration-300">
+          <div className="bg-blue-300 pt-5 px-5 pb-0 rounded-2xl w-[85%] ml-auto hover:scale-105 transition duration-300">
               <img
                 src="images/people/Tommy.png"
                 alt="Tommy"
@@ -90,7 +90,7 @@ export default function AboutPage() {
 
           {/* U-Cheong */}
           <div className="ml-0">
-            <div className="bg-blue-600 p-5 px-5 pb-0 rounded-2xl w-[85%] hover:scale-105 transition duration-300">
+            <div className="bg-lime-300 p-5 px-5 pb-0 rounded-2xl w-[85%] hover:scale-105 transition duration-300">
               <img
                 src="images/people/Uchoengc.png"
                 alt="U-Cheong"
