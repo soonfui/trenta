@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import clsx from "clsx";
 import Link from "next/link";
 import { SiteNav } from "@/app/components/SiteNav";
+import { TrustedBy } from "@/app/components/TrustedBy";
 import {Inter} from 'next/font/google'
 import { Titillium_Web } from "next/font/google";
+import { Play } from "lucide-react";
+
 
 
 const inter = Inter({
@@ -262,59 +264,6 @@ export default function Home() {
 
   const current = data[active as keyof typeof data];
 
-  const trustedLogos = [
-    "/images/client/1.png",
-    "/images/client/2.png",
-    "/images/client/3.png",
-    "/images/client/4.png",
-    "/images/client/5.png",
-    "/images/client/6.png",
-    "/images/client/7.png",
-    "/images/client/8.png",
-    "/images/client/9.png",
-    "/images/client/10.png",
-    "/images/client/11.png",
-    "/images/client/12.png",
-    "/images/client/13.jpg",
-    "/images/client/14.jpg",
-    "/images/client/15.jpg",
-    "/images/client/16.jpg",
-    "/images/client/17.jpg",
-    "/images/client/9.png",
-  ];
-  const trustedChunkSize = 6;
-  const trustedChunks = useMemo(
-    () =>
-      Array.from(
-        { length: Math.ceil(trustedLogos.length / trustedChunkSize) },
-        (_, i) => trustedLogos.slice(i * trustedChunkSize, i * trustedChunkSize + trustedChunkSize)
-      ),
-    []
-  );
-  const [trustedBatchIndex, setTrustedBatchIndex] = useState(0);
-  const [trustedVisible, setTrustedVisible] = useState(true);
-
-  useEffect(() => {
-    if (!trustedChunks.length) return;
-
-    const showMs = 3200;
-    const fadeMs = 500;
-    let fadeTimeout: ReturnType<typeof setTimeout> | undefined;
-
-    const interval = setInterval(() => {
-      setTrustedVisible(false);
-      fadeTimeout = setTimeout(() => {
-        setTrustedBatchIndex((prev) => (prev + 1) % trustedChunks.length);
-        setTrustedVisible(true);
-      }, fadeMs);
-    }, showMs + fadeMs);
-
-    return () => {
-      clearInterval(interval);
-      if (fadeTimeout) clearTimeout(fadeTimeout);
-    };
-  }, [trustedChunks.length]);
-
     // 👉 保證至少 6 個位置（不足補 null）
   // const slots = [...current];
   //   while (slots.length < 6) slots.push(null);
@@ -329,10 +278,24 @@ export default function Home() {
     if (!item) return null;
 
     if (item.quote) {
+      const shouldLinkToWorks =
+        typeof item.author === "string" && /see how we support/i.test(item.author);
+
       return (
         <div className="flex flex-col justify-between h-full">
           <p className="text-lg leading-relaxed">{item.quote}</p>
-          <p className="text-sm mt-6 opacity-70">{item.author}</p>
+          {item.author ? (
+            shouldLinkToWorks ? (
+              <Link
+                href="/works"
+                className="text-sm mt-6 opacity-70 underline underline-offset-4 hover:opacity-100 transition"
+              >
+                {item.author}
+              </Link>
+            ) : (
+              <p className="text-sm mt-6 opacity-70">{item.author}</p>
+            )
+          ) : null}
         </div>
       );
     }
@@ -369,7 +332,7 @@ export default function Home() {
               From space to screen to sound — we design how your brand stands out.
             </p>
             <a
-              href="https://wa.me/6011 1153 7996"
+              href="#contact"
               className="inline-block mt-6 border-b border-white pb-1 text-white"
             >
               Start Your Project
@@ -433,33 +396,7 @@ export default function Home() {
 
       </section>
 
-      {/* TRUSTED BY */}
-      <section className="px-6 md:px-16 lg:px-24 max-w-[1400px] mx-auto mt-24 md:mt-32 text-center">
-        <p className="text-sm md:text-base tracking-[0.25em] text-white/60 mb-10 md:mb-14">
-          TRUSTED BY
-        </p>
-
-        <div
-          className={clsx(
-            "grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8 lg:gap-10 transition-opacity duration-500",
-            trustedVisible ? "opacity-100" : "opacity-0"
-          )}
-        >
-          {trustedChunks[trustedBatchIndex]?.map((logo, i) => (
-            <div
-              key={`${trustedBatchIndex}-${logo}-${i}`}
-              className="flex h-16 w-full items-center justify-center md:h-20 lg:h-24"
-            >
-              <img
-                src={logo}
-                alt="Client logo"
-                className="trusted-logo-item h-full w-auto object-contain"
-                style={{ animationDelay: `${i * 0.14}s` }}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+      <TrustedBy />
 
       {/* WHO WE ARE */}
       <section className="px-6 md:px-12 max-w-7xl mx-auto mt-32 md:mt-48">
@@ -546,47 +483,70 @@ export default function Home() {
       </section>
 
       {/* CONTACT */}
-      <section className="bg-white text-black px-6 md:px-12 py-24 md:py-32 font-apple">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-          {/* LEFT */}
-          <div>
-            <h2 className="text-4xl md:text-6xl font-semibold tracking-[-0.02em] mb-12">
-              Let’s Get in Touch
-            </h2>
+      <section
+        id="contact"
+        className="bg-white text-black px-6 md:px-12 py-4 md:py-4 pb-24 md:pb-32 font-apple"
+      >
+        <div className="max-w-7xl mx-auto">
 
-            {/* PHONE */}
-            <div className="mb-8">
-              <p className="text-3xl font-semibold mb-2">Phone</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium">+6011 1153 7996</p>
-            </div>
-
-            {/* EMAIL */}
-            <div className="mb-8">
-              <p className="text-3xl font-semibold mb-2">Email</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium">trentainformation@gmail.com</p>
-            </div>
-
-            {/* ADDRESS */}
-            <div>
-              <p className="text-3xl font-semibold mb-2">Address</p>
-              <p className="text-lg md:text-xl text-black/70 font-medium leading-relaxed">
-                26 A, Jln Selayang Segar 1,
-                <br />
-                Taman Selayang Segar,
-                <br />
-                68100 Batu Caves, Selangor
-              </p>
-            </div>
+          {/* TOP CENTER LOGO */}
+          <div className="flex justify-center mb-12">
+            <img
+              src="/images/logo.png"
+              alt="Trenta Logo"
+              width={300}
+              height={140}
+              className="object-contain"
+            />
           </div>
 
-          {/* RIGHT MAP */}
-          <div className="w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden border border-black/10">
-            <iframe
-              src="https://maps.google.com/maps?q=26%20Jln%20Selayang%20Segar%201%20Batu%20Caves&z=15&output=embed"
-              className="w-full h-full border-0"
-              loading="lazy"
-              title="Map"
-            />
+          <div className="grid md:grid-cols-2 gap-16 items-start">
+
+            {/* LEFT */}
+            <div>
+              <h2 className="text-4xl md:text-6xl font-semibold tracking-[-0.02em] mb-12">
+                Let’s Get in Touch
+              </h2>
+
+              {/* PHONE */}
+              <div className="mb-8">
+                <p className="text-3xl font-semibold mb-2">Phone</p>
+                <p className="text-lg md:text-xl text-black/70 font-medium">
+                  +6011 1153 7996
+                </p>
+              </div>
+
+              {/* EMAIL */}
+              <div className="mb-8">
+                <p className="text-3xl font-semibold mb-2">Email</p>
+                <p className="text-lg md:text-xl text-black/70 font-medium">
+                  trentainformation@gmail.com
+                </p>
+              </div>
+
+              {/* ADDRESS */}
+              <div>
+                <p className="text-3xl font-semibold mb-2">Address</p>
+                <p className="text-lg md:text-xl text-black/70 font-medium leading-relaxed">
+                  26 A, Jln Selayang Segar 1,
+                  <br />
+                  Taman Selayang Segar,
+                  <br />
+                  68100 Batu Caves, Selangor
+                </p>
+              </div>
+            </div>
+
+            {/* RIGHT MAP */}
+            <div className="w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden border border-black/10">
+              <iframe
+                src="https://maps.google.com/maps?q=26%20Jln%20Selayang%20Segar%201%20Batu%20Caves&z=15&output=embed"
+                className="w-full h-full border-0"
+                loading="lazy"
+                title="Map"
+              />
+            </div>
+
           </div>
         </div>
       </section>
@@ -656,72 +616,55 @@ export default function Home() {
         </div>
       )}
 
-      <footer className="bg-black text-white px-6 md:px-12 pt-6 pb-10">
-
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <footer className="bg-black text-white px-6 md:px-12 pt-8 pb-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
 
           {/* LEFT */}
-          <div className="space-y-2">
+          <div className="space-y-4">
             <p className="text-sm text-white/60">
               © 2026 Trenta. Creating events, content & experiences.
             </p>
 
             {/* COMPANY INFO */}
-            <div className="text-xs text-white/40 leading-relaxed">
+            <div className="text-xs text-white/40 leading-relaxed space-y-1">
               <p>TRENTA ENTERPRISE · Since 2015</p>
               <p>201503347216 (002496057-M)</p>
             </div>
+
+            {/* MANAGED BY */}
+            <p className="text-xs text-white/30 pt-2">
+              Managed by{" "}
+              <a
+                href="https://magmanet.my"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white/70 transition"
+              >
+                magmanet.my
+              </a>
+            </p>
           </div>
 
           {/* RIGHT */}
-          <div className="flex gap-6 text-sm text-white/60">
-            <a
-              href="https://www.instagram.com/tommytongmy?igsh=d3l0eGVzNWN1MXJi"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition"
-            >
-              Instagram
-            </a>
-
+          <div className="flex gap-6">
             <a
               href="https://www.youtube.com/@trentainformation"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-white transition"
+              className="opacity-80 hover:opacity-100 transition"
+              aria-label="YouTube"
             >
-              YouTube
-            </a>
-
-            <a
-              href="#"
-              className="hover:text-white transition"
-            >
-              XHS
+              <img
+                src="/images/youtube.png"
+                alt="YouTube"
+                className="h-10 md:h-14 w-auto object-contain"
+              />
             </a>
           </div>
 
         </div>
-
       </footer>
 
-      <style jsx global>{`
-        @keyframes trustedFadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .trusted-logo-item {
-          opacity: 0;
-          animation: trustedFadeIn 0.45s ease forwards;
-        }
-      `}</style>
     </div>
   );
 }

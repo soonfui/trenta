@@ -2,6 +2,7 @@
 
 import { SiteNav } from "@/app/components/SiteNav";
 import { StorySimple } from "@/app/components/StorySimple";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
@@ -42,12 +43,12 @@ export default function AboutPage() {
               At Trenta, we don&apos;t just create — we craft experiences that move people.
             </p>
 
-            <button
-              type="button"
+            <Link
+              href="/#contact"
               className="mt-6 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-gray-200"
             >
               Start a project with us
-            </button>
+            </Link>
           </div>
 
           {/* TIMELINE — needs column stretch so absolute line gets full row height (items-start made this ~40px tall) */}
@@ -108,6 +109,55 @@ export default function AboutPage() {
         </div>
         </div>
       </section>
+
+      <footer className="bg-black text-white px-6 md:px-12 pt-8 pb-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+
+          {/* LEFT */}
+          <div className="space-y-4">
+            <p className="text-sm text-white/60">
+              © 2026 Trenta. Creating events, content & experiences.
+            </p>
+
+            {/* COMPANY INFO */}
+            <div className="text-xs text-white/40 leading-relaxed space-y-1">
+              <p>TRENTA ENTERPRISE · Since 2015</p>
+              <p>201503347216 (002496057-M)</p>
+            </div>
+
+            {/* MANAGED BY */}
+            <p className="text-xs text-white/30 pt-2">
+              Managed by{" "}
+              <a
+                href="https://magmanet.my"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white/70 transition"
+              >
+                magmanet.my
+              </a>
+            </p>
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex gap-6">
+            <a
+              href="https://www.youtube.com/@trentainformation"
+              target="_blank"
+              rel="noreferrer"
+              className="opacity-80 hover:opacity-100 transition"
+              aria-label="YouTube"
+            >
+              <img
+                src="/images/youtube.png"
+                alt="YouTube"
+                className="h-10 md:h-14 w-auto object-contain"
+              />
+            </a>
+          </div>
+
+        </div>
+      </footer>
     </main>
   );
 }

@@ -53,8 +53,8 @@ export function SiteNav() {
 
           <nav className="hidden md:flex items-center gap-8 text-[14px] relative z-10">
             <Link href="/about">About</Link>
-            <a href="#">Advertising</a>
-            <a href="#">Event</a>
+            <Link href="/services">Services</Link>
+            <Link href="/works">Works</Link>
             <a
               href="https://wa.me/601123280082"
               target="_blank"
@@ -83,8 +83,12 @@ export function SiteNav() {
           <Link href="/about" onClick={() => setMenuOpen(false)}>
             About
           </Link>
-          <a onClick={() => setMenuOpen(false)}>Advertising</a>
-          <a onClick={() => setMenuOpen(false)}>Event</a>
+          <Link href="/services" onClick={() => setMenuOpen(false)}>
+            Services
+          </Link>
+          <Link href="/works" onClick={() => setMenuOpen(false)}>
+            Works
+          </Link>
 
           <a
             href="https://wa.me/601123280082"
