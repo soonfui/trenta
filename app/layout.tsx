@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   creator: "Trenta Media",
   publisher: "Trenta Media",
 
-  openGraph: {
+    openGraph: {
     title: "Trenta Media | Event & Advertising Malaysia",
     description:
       "Trusted event management, advertising campaigns and live experiences in Malaysia.",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/public/images/logo.png",
+        url: "/images/logo.png",
         width: 1200,
         height: 630,
         alt: "Trenta Media",
@@ -70,13 +70,13 @@ export const metadata: Metadata = {
     title: "Trenta Media",
     description:
       "Trusted event management and advertising solutions in Malaysia.",
-    images: ["/public/images/logo.png"],
+    images: ["/images/logo.png"],
   },
 
   icons: {
-    icon: "/public/images/logo.png",
-    shortcut: "/public/images/logo.png",
-    apple: "/public/images/logo.png",
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
   },
 
   robots: {
