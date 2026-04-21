@@ -2,10 +2,10 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ServicesGrid() {
-  const [open, setOpen] = useState<string | null>(null);
+  const router = useRouter();
 
   const Card = ({
     title,
@@ -19,7 +19,7 @@ export default function ServicesGrid() {
     hover: string;
   }) => (
     <button
-      onClick={() => setOpen(title)}
+      onClick={() => router.push("/works")}
       className={`relative text-left border ${border} p-8 h-[360px] transition duration-300 ${hover} group`}
     >
       {/* TITLE TOP */}
@@ -53,7 +53,7 @@ export default function ServicesGrid() {
           {/* EVENT */}
           <Card
             title="Event"
-            desc="Corporate launches, weddings, roadshows and live experiences."
+            desc="Corporate launches, brand roadshows and live experiences."
             border="border-lime-400"
             hover="hover:bg-lime-400 hover:text-black"
           />
@@ -61,7 +61,7 @@ export default function ServicesGrid() {
           {/* ADVERTISING */}
           <Card
             title="Advertising"
-            desc="Campaign ideas, social content, branding and promotions."
+            desc="Creative Ideas, Brand Communication, Photo & Video Production."
             border="border-blue-500"
             hover="hover:bg-blue-500 hover:text-white"
           />
@@ -85,7 +85,7 @@ export default function ServicesGrid() {
           {/* LIGHT */}
           <Card
             title="Light & Sound"
-            desc="Stage lighting, PA systems, microphones and technical crew."
+            desc="Performance Stage, Indoor & Outdoor Sound System, Stage Lighting Design and LED screens"
             border="border-red-500"
             hover="hover:bg-red-500 hover:text-white"
           />
@@ -93,38 +93,12 @@ export default function ServicesGrid() {
           {/* STATIC TEXT */}
           <div className="border border-white/15 p-8 flex items-end">
             <p className="text-2xl leading-snug text-white/90">
-              Professional systems built for memorable experiences.
+              Built for Attention. Made for Impact.
             </p>
           </div>
 
         </div>
       </section>
-
-      {/* POPUP */}
-      {open && (
-        <div
-          onClick={() => setOpen(null)}
-          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-6"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white text-black max-w-xl w-full rounded-2xl p-10"
-          >
-            <h3 className="text-4xl font-semibold mb-4">{open}</h3>
-
-            <p className="text-lg text-black/70 mb-8">
-              Learn more about our {open} service solutions.
-            </p>
-
-            <button
-              onClick={() => setOpen(null)}
-              className="px-6 py-3 rounded-full bg-black text-white"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -41,9 +41,14 @@ export default function SignatureSolutions() {
 
             {/* BUTTON */}
             <div className="mb-auto">
-              <button className="bg-black text-white rounded-full px-8 py-4 text-lg hover:scale-105 transition">
+              <a
+                href="https://wa.me/601111537996?text=Hi%20Trenta,%20I%20need%20an%20event%20solution."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block bg-black text-white rounded-full px-8 py-4 text-lg hover:scale-105 transition"
+              >
                 I need an event solution
-              </button>
+              </a>
             </div>
 
             {/* LIST */}
@@ -53,19 +58,19 @@ export default function SignatureSolutions() {
               </p>
 
               <div className="border-t border-white/20 py-5 text-center">
-                Product launches
+                Branding
               </div>
 
               <div className="border-t border-white/20 py-5 text-center">
-                Annual dinners
+                Social media campaigns
               </div>
 
               <div className="border-t border-white/20 py-5 text-center">
-                Roadshows & expos
+                PR Communication
               </div>
 
               <div className="border-t border-white/20 py-5 text-center border-b">
-                Weddings & private events
+                Studio Production
               </div>
             </div>
           </div>
@@ -89,9 +94,14 @@ export default function SignatureSolutions() {
 
             {/* BUTTON */}
             <div className="mb-auto">
-              <button className="bg-black text-white rounded-full px-8 py-4 text-lg hover:scale-105 transition">
+              <a
+                href="https://wa.me/601111537996?text=Hi%20Trenta,%20I%20need%20an%20event%20solution."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block bg-black text-white rounded-full px-8 py-4 text-lg hover:scale-105 transition"
+              >
                 I need marketing support
-              </button>
+              </a>
             </div>
 
             {/* LIST */}

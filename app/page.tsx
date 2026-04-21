@@ -7,6 +7,9 @@ import { TrustedBy } from "@/app/components/TrustedBy";
 import {Inter} from 'next/font/google'
 import { Titillium_Web } from "next/font/google";
 import { Play } from "lucide-react";
+import FuturisticIntro from "./components/FuturisticIntro";
+import ScrollRevealTitle from "./components/ScrollRevealTitle";
+import StickyCards from "./components/StickyCards";
 
 
 
@@ -397,6 +400,9 @@ export default function Home() {
       </section>
 
       <TrustedBy />
+      {/* <FuturisticIntro/>
+      <ScrollRevealTitle/> */}
+      {/* <StickyCards/> */}
 
       {/* WHO WE ARE */}
       <section className="px-6 md:px-12 max-w-7xl mx-auto mt-32 md:mt-48">
